@@ -1,0 +1,896 @@
+<html>
+<body>
+
+<canvas id="myCanvas" width="1000" height="600" style="border:5px solid BLACK; ">
+</canvas>
+
+<script>
+
+
+    var link = document.getElementById("myCanvas");
+	var context = link.getContext("2d");
+	var valorcor = 0 
+// menu
+
+	var menu = new Image ()
+	menu.src = "Imagens/tela de entrada.png"
+	menu_w = 1000
+	menu_h = 600 
+	menu_x = myCanvas.width/2 - menu_w/2 
+	menu_y = myCanvas.height/2 - menu_h / 2
+	
+	var creditos = new Image ()
+	creditos.src = "Imagens/creditos.png"
+	creditos_w = 1000
+	creditos_h = 600 
+	creditos_x = myCanvas.width/2 - creditos_w/2 
+	creditos_y = myCanvas.height/2 - creditos_h / 2
+	
+	var jogador1ganhou= new Image ()
+	jogador1ganhou.src = "Imagens/Jogador1Venceu.png"
+	jogador1ganhou_w = 1020
+	jogador1ganhou_h = 620
+	jogador1ganhou_x = myCanvas.width/2 - jogador1ganhou_w/2 
+	jogador1ganhou_y = myCanvas.height/2 - jogador1ganhou_h / 2
+	
+	var jogador2ganhou = new Image ()
+	jogador2ganhou.src = "Imagens/Jogador2Venceu.png"
+	jogador2ganhou_w = 1020
+	jogador2ganhou_h = 620
+	jogador2ganhou_x = myCanvas.width/2 - jogador2ganhou_w/2 
+	jogador2ganhou_y = myCanvas.height/2 - jogador2ganhou_h / 2
+	
+	var botaoComecar = new Image ()
+	botaoComecar.src = "Imagens/botao comecar.png"
+	botaoComecar_w = 276
+	botaoComecar_h = 58
+	botaoComecar_x = myCanvas.width/2 - botaoComecar_w/2 
+	botaoComecar_y = myCanvas.height/2 +50 
+	
+    var botaoCreditos = new Image ()
+	botaoCreditos.src = "Imagens/botao creditos.png"
+	botaoCreditos_w = 276
+	botaoCreditos_h = 58
+	botaoCreditos_x = myCanvas.width/2 - botaoCreditos_w/2 
+	botaoCreditos_y = myCanvas.height/2 +120  
+	
+	var botaoMenu = new Image ()
+	botaoMenu.src ="Imagens/botao menu.png"
+	botaoMenu_w = 116 
+	botaoMenu_h = 52 
+	botaoMenu_x = 870
+	botaoMenu_y = 530
+	var botaoMenu2 = new Image ()
+	botaoMenu2.src ="Imagens/botao menu.png"
+	botaoMenu2_w = 116 
+	botaoMenu2_h = 52 
+	botaoMenu2_x = 870
+	botaoMenu2_y = 530
+	var botaoMenu3 = new Image ()
+	botaoMenu3.src ="Imagens/botao menu.png"
+	botaoMenu3_w = 116 
+	botaoMenu3_h = 52 
+	botaoMenu3_x = 50
+	botaoMenu3_y = 530
+	
+	var controleMenu = 0
+
+	
+	
+
+//jogadores e pontos	
+	var armazenarP1= true 
+	var armazenarP2 = true 
+	var player1 
+	var player2 
+	var ponto_player1 = 0
+	var ponto_player2 = 0
+	var quantosGols 
+	var armazenarquantosGols = true 
+	 
+// Detalhes	
+	var jogoComecou = false 
+	var imageGool = false 
+	var goolPlayer1 = false 
+	var goolPlayer2 = false 
+	var tempo = 0 
+	var tocar1= 0 
+	var tocar2= 0 
+	var tocar = 0 
+	var gamb1 = 0 
+	var gamb2 = 0 
+	var gamb3 = 0 
+	var gamb4 = 0 
+	
+	var audioFundo = 0 
+	
+	// player 1 
+	var playerImage1 = new Image ()
+	playerImage1.src= "Imagens/player 1.png"
+	var player1_W = 20
+	var player1_H = 140 
+	var player1_X = 100 
+	var player1_Y = (myCanvas.height/2 - player1_H/2)
+	var player1_speed_y = 10
+	var movePlayer1_Up = false 
+	var movePlayer1_Donw =false 
+	// player 2 
+	var playerImage2 = new Image ()
+	playerImage2.src= "Imagens/player 2.png"
+	var player2_W = 20
+	var player2_H = 140 
+	var player2_X = 880
+	var player2_Y = (myCanvas.height/2 - player1_H/2)
+	var player2_speed_y = 10  
+	var movePlayer2_Up = false ;
+	var movePlayer2_Donw = false ; 
+	
+	// bola 
+	var bola= new Image()
+	bola.src= "Imagens/bola.png"
+	var bola_w = 40
+	var bola_h = 40
+	var bola_x = myCanvas.width/2 - bola_w/2
+	var bola_y = myCanvas.height /2 -bola_h/2
+	var bola_speed_x = 10
+	var bola_speed_y = 0
+	var moveBola = false 
+	var valor = [0,1, -1 ]
+	
+     // gool
+    var goolImage = new Image ()
+	goolImage.src= "Imagens/gol.png"
+    var gool_W = 200 
+	var gool_H = 350
+	var gool_X = (myCanvas.width/2 - gool_H/2 )
+	var gool_Y = (myCanvas.height/2 -250)
+	
+	// audios 
+	var audio_gol= new Audio ()
+	audio_gol.src= "Audio/gol.wav"
+	var audio_chute = new Audio ()
+	audio_chute.src ="Audio/chute.wav"
+	var audio_colisao = new Audio ()
+	audio_colisao.src = "Audio/colisao cantos.wav"
+	var audio_fimdejogo = new Audio ()
+	audio_fimdejogo.src = "Audio/fimjogo.wav"
+	var audio_golTorcida = new Audio ()
+	audio_golTorcida.src = "Audio/TorcidaGol.wav"
+	var audio_inicioJogo = new Audio ()
+	audio_inicioJogo.src = "Audio/comecoJogo.wav"
+	var audio_somDeFundo = new Audio ()
+	audio_somDeFundo.src = "Audio/SomFundo.mp3"
+	var audio_Click= new Audio ()
+	audio_Click.src= "Audio/Click.mp3"
+	// input 
+
+	var _keyDown = function(e)
+	{
+	
+	 if (e.keyCode==38)
+	  {
+	  movePlayer2_Up = true 
+	 
+	  }
+		if(e.keyCode==40 )
+		{
+		movePlayer2_Donw = true 
+		
+		}
+		if(e.keyCode==87)
+		{
+		movePlayer1_Up = true 
+		
+		}
+		if (e.keyCode== 83)
+		{
+		movePlayer1_Donw = true 
+		
+		}
+	
+		if (e.keyCode == 32 && jogoComecou==false )
+		{
+		bola_speed_x = 10 
+		bola_speed_y = Math.random()*15
+		bola_speed_x*=valor[Math.floor(Math.random ()*(3-1) )+1 ]
+		bola_speed_y *=valor[Math.floor(Math.random ()*(3-1) )+1 ]
+      		
+		}
+		
+		
+		// 87 pra cima 
+		// 83 pra baixo 
+	}
+	var _keyUp = function(e)
+	{
+	
+	  if (e.keyCode==38)
+	  {
+	  movePlayer2_Up = false 
+	 
+	  
+	  }
+		if (e.keyCode==40 )
+		{
+		movePlayer2_Donw = false 
+		
+		 
+		}
+		if (e.keyCode==87)
+		{
+		movePlayer1_Up = false 
+		
+		}
+		if(e.keyCode== 83)
+		{
+		movePlayer1_Donw = false 
+		
+		}
+		if (e.keyCode == 32)
+		{
+		if (tocar == 0 )
+		{
+		audio_inicioJogo.currentTime=0
+		audio_inicioJogo.play()		
+		}
+		if (tocar <= 1 )
+		{
+		audio_chute.currentTime = 0 
+		audio_chute.play()
+		
+		}
+		moveBola = true 
+	  jogoComecou=true 
+	  goolPlayer1= false 
+	  goolPlayer2 = false 
+       	tocar ++ 
+		}
+		}
+		
+		var _mouseUp = function(e)
+	{
+	    if (e.x >botaoCreditos_x && e.x<botaoCreditos_x+botaoCreditos_w && e.y>botaoCreditos_y && e.y<botaoCreditos_y+botaoCreditos_h && controleMenu == 0 )
+		{
+		audio_Click.currentTime = 0 
+		audio_Click.play()
+		controleMenu=1 
+		console.log("duahdusah")
+		}
+		if (e.x >botaoMenu_x && e.x<botaoMenu_x+botaoMenu_w && e.y>botaoMenu_y && e.y<botaoMenu_y+botaoMenu_h && controleMenu == 1 )
+		{
+		audio_Click.currentTime = 0 
+		audio_Click.play()
+		controleMenu = 0 
+		}
+		if (e.x >botaoMenu2_x && e.x<botaoMenu2_x+botaoMenu2_w && e.y>botaoMenu2_y && e.y<botaoMenu2_y+botaoMenu2_h && controleMenu == 3 )
+		{
+		audio_Click.currentTime = 0 
+		audio_Click.play()
+		reset()
+		controleMenu = 0
+		
+		}
+		if (e.x >botaoMenu3_x && e.x<botaoMenu3_x+botaoMenu3_w && e.y>botaoMenu3_y && e.y<botaoMenu3_y+botaoMenu3_h && controleMenu == 4	 )
+		{
+		audio_Click.currentTime = 0 
+		audio_Click.play()
+		reset()
+		controleMenu = 0 
+		
+		}
+		
+		if (e.x >botaoComecar_x && e.x<botaoComecar_x+botaoComecar_w && e.y>botaoComecar_y && e.y<botaoComecar_y+botaoComecar_h && controleMenu == 0 )
+		{
+		audio_Click.currentTime = 0 
+		audio_Click.play()
+		controleMenu=2 
+		audioFundo = 2 
+		console.log("siajdaisjd")
+		}
+		
+		
+	}	
+		
+	function draw()
+	{
+	
+	context.clearRect(0,0,myCanvas.width,myCanvas.height)
+	campo()
+	placar1()
+	placar2()
+	context.drawImage(playerImage1 , player1_X,player1_Y,player1_W,player1_H )
+	context.drawImage(playerImage2 , player2_X,player2_Y,player2_W,player2_H )
+	context.drawImage(bola , bola_x,bola_y,bola_w,bola_h )
+
+	}
+	
+    function drawMenu ()
+	{
+	context.clearRect(0,0,myCanvas.width,myCanvas.height)
+	context.drawImage(menu , menu_x , menu_y, menu_w , menu_h)
+	context.drawImage(botaoComecar , botaoComecar_x , botaoComecar_y,botaoComecar_w,botaoComecar_h)
+	context.drawImage(botaoCreditos , botaoCreditos_x , botaoCreditos_y,botaoCreditos_w,botaoCreditos_h)
+
+	}
+	function drawCretidos ()
+	{
+		context.clearRect(0,0,myCanvas.width,myCanvas.height)
+		context.drawImage(creditos , creditos_x , creditos_y, creditos_w , creditos_h)
+		context.drawImage(botaoMenu , botaoMenu_x , botaoMenu_y, botaoMenu_w , botaoMenu_h)
+	}
+	function drawP1Ganhou ()
+	{
+	    context.clearRect(0,0,myCanvas.width,myCanvas.height)
+		context.drawImage(jogador1ganhou , jogador1ganhou_x ,jogador1ganhou_y, jogador1ganhou_w , jogador1ganhou_h)
+		context.drawImage(botaoMenu2 , botaoMenu2_x , botaoMenu2_y, botaoMenu2_w , botaoMenu2_h)
+	    context.font = "80px Unknown Font, sans-serif";	
+	    context.fillStyle = "Yellow";
+		context.fillText(player1 , myCanvas.width/2, 450);
+	}
+	function drawP2Ganhou ()
+	{
+	    context.clearRect(0,0,myCanvas.width,myCanvas.height)
+		context.drawImage(jogador2ganhou , jogador2ganhou_x ,jogador2ganhou_y, jogador2ganhou_w , jogador2ganhou_h)
+		context.drawImage(botaoMenu3 , botaoMenu3_x , botaoMenu3_y, botaoMenu3_w , botaoMenu3_h)
+	    context.font = "80px Unknown Font, sans-serif";	
+	    context.fillStyle = "Yellow";
+		context.fillText(player2 , 250, 450);
+	}
+	function reset ()
+	{
+	console.log("resetou")
+	 armazenarP1= true 
+	 armazenarP2 = true 
+	
+	 ponto_player1 = 0
+	 ponto_player2 = 0
+	
+	 armazenarquantosGols = true 
+	 
+// Detalhes	
+	 jogoComecou = false 
+	 imageGool = false 
+	 goolPlayer1 = false 
+	 goolPlayer2 = false 
+	 tempo = 0 
+	 tocar1= 0 
+	 tocar2= 0 
+	 tocar = 0 
+	 gamb1 = 0 
+	 gamb2 = 0 
+	 gamb3 = 0 
+	 gamb4 = 0 
+	
+	 audioFundo = 0 
+	
+	// player 1 
+	 
+	 player1_W = 20
+	 player1_H = 140 
+	 player1_X = 100 
+	 player1_Y = (myCanvas.height/2 - player1_H/2)
+	 player1_speed_y = 10
+	 movePlayer1_Up = false 
+	 movePlayer1_Donw =false 
+	// player 2 
+	 
+	 player2_W = 20
+	 player2_H = 140 
+	 player2_X = 880
+	 player2_Y = (myCanvas.height/2 - player1_H/2)
+	 player2_speed_y = 10  
+	 movePlayer2_Up = false ;
+	 movePlayer2_Donw = false ; 
+	
+	// bola 
+	
+	 bola_w = 40
+	 bola_h = 40
+	 bola_x = myCanvas.width/2 - bola_w/2
+	 bola_y = myCanvas.height /2 -bola_h/2
+	 bola_speed_x = 10
+	 bola_speed_y = 0
+	 moveBola = false 
+	
+	
+	}
+	
+	function placar1 ()
+	{
+	if (armazenarP1)
+	{
+	player1= prompt("Jogador 1: ")
+	armazenarP1= false 
+	}
+	context.font = "30px solid Arial";	
+	context.fillStyle = "WHITE";	
+	context.fillText(player1 +":"+ ponto_player1, 50, 30);
+	}
+	
+	function placar2 ()
+	{
+	if (armazenarP2)
+	{
+	player2 = prompt("Jogador 2: ")
+	armazenarP2= false 
+	}
+	if (armazenarquantosGols)
+	{
+	quantosGols= prompt("De quantos gols ?")
+	armazenarquantosGols = false 
+	}
+	context.font = "30px solid Arial";	
+	context.fillStyle = "WHITE";	
+	context.fillText(player2 + ":" + ponto_player2, 850, 30);
+	}
+	function acabarJogo ()
+	{
+	if (ponto_player1==quantosGols)
+	{
+	audio_gol.pause()
+	audio_golTorcida.pause()
+	audio_fimdejogo.currentTime = 0 
+	audio_fimdejogo.play()
+	controleMenu= 3 
+	}
+	if (ponto_player2==quantosGols)
+	{
+	audio_gol.pause()
+	audio_golTorcida.pause()
+	audio_fimdejogo.currentTime = 0 
+	audio_fimdejogo.play()
+	controleMenu= 4
+	}
+	}
+	function audioFundoCont ()
+	{
+	if (audioFundo==0 )
+	{
+	audio_somDeFundo.currentTime = 0
+	audio_somDeFundo.play()
+	audioFundo++
+	console.log("ta tocando")
+	}
+	if (audio_somDeFundo.currentTime == 203.885719 )
+	{
+	audioFundo=0 
+	console.log("aff")
+	
+	}
+	if (audioFundo == 2){
+	audio_somDeFundo.pause()
+	console.log("parou")
+	}
+	}
+	
+	function campo()
+	{
+	context.fillStyle = "#02692f"
+	context.fillRect(0,0, myCanvas.width ,myCanvas.height);
+	for (var i = 0 ; i<900 ; i+= 45 )
+	{
+	
+	var cores = ["#29b940","#00a748"]
+	context.fillStyle = cores[valorcor]
+	context.fillRect(50+i,50, 45 ,500);
+ 
+	valorcor ++
+	if (valorcor>1)
+	{
+	valorcor = 0 
+	}
+	}
+	context.strokeStyle = "WHITE";
+	context.strokeRect(50, 50, 900, 500);
+	context.strokeRect(50, 150, 165, 300 );
+	context.strokeRect(50, 232, 55, 136 );
+    context.strokeRect(20, 273, 30, 54 );
+	context.moveTo(myCanvas.width/2, 50);
+	context.lineTo(myCanvas.width/2,550);
+	context.stroke();	
+	// circulos 
+	context.strokeStyle = "WHITE";
+	context.beginPath();
+    context.arc( myCanvas.width/2, myCanvas.height /2, 69, 0, 2 * Math.PI);
+	context.stroke();
+	context.fillStyle = "WHITE"
+	context.beginPath();
+    context.arc( myCanvas.width/2, myCanvas.height /2, 4, 0, 2 * Math.PI);
+	context.fill();
+	context.beginPath();
+    context.arc( 160, myCanvas.height /2, 4, 0, 2 * Math.PI);
+	context.fill();
+	context.beginPath();
+    context.arc( 840, myCanvas.height /2, 4, 0, 2 * Math.PI);
+	context.fill();
+	context.beginPath();
+    context.arc( 195, myCanvas.height /2, 69, -Math.PI/2,  Math.PI/2);
+	context.stroke();
+	context.beginPath();
+    context.arc( 815 , myCanvas.height /2, 69, Math.PI/2,  -Math.PI/2);
+	context.stroke();
+    // gambiarra 	
+	context.fillStyle = "#00a748";
+	context.fillRect(185, myCanvas.height/2 - 100 , 29, 200);
+	context.fillStyle = "#29b940";
+	context.fillRect(784, myCanvas.height/2 - 100 , 31, 200);
+	// lado direito 
+	context.strokeStyle = "WHITE";
+	context.strokeRect(785, 150, 165, 300 );
+	context.strokeRect(895, 232, 55, 136 );
+    context.strokeRect(950, 273, 30, 54 );
+	// escanteios 
+	context.beginPath();
+    context.arc( 950,550, 20, Math.PI,  -Math.PI/2);
+	context.stroke();
+    context.beginPath();
+    context.arc( 50,50, 20,2*Math.PI,  Math.PI/2);
+	context.stroke();
+	context.beginPath();
+    context.arc( 950,50, 20, Math.PI/2 ,Math.PI  );
+	context.stroke();
+	context.beginPath();
+    context.arc( 50 ,550, 20,-Math.PI/2 , 0);
+	context.stroke();
+	
+	}
+	function update ()
+	{
+	
+	if (movePlayer1_Up)
+	{
+	player1_Y -= player1_speed_y
+
+	}
+	if (movePlayer1_Donw)
+	{
+	player1_Y += player1_speed_y
+	
+	}
+	if (movePlayer2_Up)
+	{
+	player2_Y -= player2_speed_y
+	}
+	if (movePlayer2_Donw)
+	{
+	player2_Y += player2_speed_y
+	
+	}
+	if (player1_Y <50 )
+	{
+	player1_Y  = 50  
+	}
+	if (player1_Y + player1_H > 550 )
+    {
+	player1_Y = 550 - player1_H
+	}	
+		if (player2_Y <50  )
+	{
+	player2_Y  = 50 
+	}
+	if (player2_Y + player2_H > 550 )
+    {
+	player2_Y = 550 - player2_H
+	}
+
+       
+}
+
+function updateBola ()
+{
+if (moveBola )
+{
+
+
+	 comecouJogo= true 
+     bola_x += bola_speed_x
+     bola_y += bola_speed_y
+	 
+	 
+// colisão da [BOLA] com as laterais da tela
+
+
+		if (bola_x < 50) 
+		{ 
+		  if (tocar1== 0 )
+		  {
+			audio_gol.currentTime = 0 
+		    audio_gol.play ()
+			}
+			if (tocar1>=1 )
+			{
+			
+				audio_golTorcida.currentTime = 0 
+		    audio_golTorcida.play ()
+			}
+			
+			ponto_player2++
+			goolPlayer2 = true 
+			moveBola = false 
+			jogoComecou= false 
+			imageGool=true
+			tocar1++
+	  
+	}
+		
+		if (bola_x + bola_w > 950)
+		{
+		if (tocar2== 0 )
+		  {
+			audio_gol.currentTime = 0 
+		    audio_gol.play ()
+			}
+			if (tocar2>=1 )
+			{
+			
+				audio_golTorcida.currentTime = 0 
+		    audio_golTorcida.play ()
+			}
+		ponto_player1++
+		
+		goolPlayer1 = true 
+		moveBola = false 
+		jogoComecou = false 
+		imageGool = true 
+		tocar2++
+		}
+		
+
+		
+		 //colisão da [BOLA] com as partes superior e inferior da tela
+		
+		if (bola_y < 50)
+		{
+		   audio_colisao.currentTime= 0 
+		    audio_colisao.play ()
+			bola_y = 50 
+			bola_speed_y *= -1;
+		}	
+		else if(bola_y + bola_h > 550)
+		{
+		    audio_colisao.currentTime= 0 
+		    audio_colisao.play ()
+			bola_y = 550-bola_h
+			bola_speed_y *= -1;
+			
+		}
+		
+		
+		// player 1 
+			if(bola_x + bola_w > player1_X &&
+		   bola_x < player1_X + player1_W &&
+		   bola_y + bola_h > player1_Y &&
+		   bola_y < player1_Y + player1_H)
+	   {
+	        audio_chute.currentTime = 0 
+			audio_chute.play ()
+			
+
+	   if (bola_x + bola_w > player1_X &&
+		   bola_x < player1_X + player1_W &&
+		   bola_y +bola_h > player1_Y &&
+		   bola_y < player1_Y + 20 )
+		   
+		   {
+		   if (bola_speed_y< 0 )
+		  {
+		    bola_speed_x*=-1
+			bola_speed_x += 0.8;
+		
+			gamb1 = 10 
+		}
+		   if (bola_speed_y > 0 )
+		   {
+		    bola_speed_y*=-1
+			
+		   }
+		  
+		  }
+		   
+	   if (bola_x  > player1_X &&
+		   bola_x < player1_X + player1_W &&
+		   bola_y +bola_h > player1_Y +120 &&
+		   bola_y < player1_Y + player1_H )
+		   {
+		    if (bola_speed_y>0 )
+		  {
+		    bola_speed_x*=-1
+			
+		}
+		   if (bola_speed_y<0)
+		   {
+		   bola_speed_y*=-1 
+		   bola_speed_x*=-1    
+		   }
+		  
+		   }
+		   else /* (bola_x + bola_w > player1_X &&
+		   bola_x < player1_X + player1_W &&
+		   bola_y +bola_h > player1_Y +20&&
+		   bola_y < player1_Y + 120)*/
+		   {
+		   bola_speed_x*=-1
+			bola_speed_x += 0.8;
+			
+			gamb2 = 10 
+		   }
+		   
+		   if (gamb1+gamb2 == 20 )
+		   {	   bola_speed_x*=-1
+		   gamb1 = 0 
+		   gamb2 = 0 
+		  }
+		   if (bola_speed_x < 0 )
+		   {
+		   bola_x = player1_X+1 
+		   bola_speed_x*= -1 
+		 
+		   }
+		   bola_speed_x += 0.8
+		console.log(bola_speed_x)
+		   }
+		   
+		 
+	   
+		// player 2 
+		if(bola_x + bola_w > player2_X &&
+		   bola_x < player2_X + player2_W &&
+		   bola_y + bola_h > player2_Y &&
+		   bola_y < player2_Y + player2_H)
+	   {
+	        audio_chute.currentTime = 0 
+			audio_chute.play ()
+			
+			
+			if (bola_x + bola_w > player2_X &&
+		   bola_x < player2_X + player2_W &&
+		   bola_y +bola_h > player2_Y &&
+		   bola_y < player2_Y + 20 )
+		   
+		   {
+		   if (bola_speed_y< 0 )
+		  {
+		    bola_speed_x*=-1
+			bola_speed_x += 0.8;
+			gamb1 = 10 
+		}
+		   if (bola_speed_y > 0 )
+		   {
+		    bola_speed_y*=-1
+			gamb3= 10 
+		   }
+		  
+		  }
+		   
+	   if (bola_x +bola_w > player2_X &&
+		   bola_x < player2_X + player2_W &&
+		   bola_y +bola_h > player2_Y + 120 &&
+		   bola_y < player2_Y + player2_H )
+		   {
+		   
+		    if (bola_speed_y>0 )
+		  {
+		    bola_speed_x*=-1
+			
+		}
+		   if (bola_speed_y<0)
+		   {
+		   bola_speed_y*=-1 
+		   bola_speed_x*=-1    
+		   }
+		  
+		   }
+		   else /* (bola_x + bola_w > player1_X &&
+		   bola_x < player1_X + player1_W &&
+		   bola_y +bola_h > player1_Y +20&&
+		   bola_y < player1_Y + 120)*/
+		   {
+		   bola_speed_x*=-1
+			bola_speed_x += 0.8;
+			
+			gamb2 = 10 
+			gamb4 = 10 
+		   }
+		   
+		   if (gamb1+gamb2 == 20 )
+		   {	   bola_speed_x*=-1
+		   gamb1 = 0 
+		   gamb2 = 0 
+		  }
+		   
+		   if (gamb3+gamb4 == 20 )
+		   {
+		   bola_speed_x*=-1
+		   gamb3 = 0 
+		   gamb4 = 0 
+		
+		   }
+		   if (bola_speed_x > 0 )
+		   {
+		   bola_x = player2_X - bola_w
+		   bola_speed_x*= -1 
+		
+		   }
+	    bola_speed_x -= 0.8
+		console.log(bola_speed_x)
+}
+      		
+	 
+}
+	}
+	
+	  function gool () {
+	  if (imageGool)
+	{
+	tempo++
+	if (tempo < 90  ){
+	
+	context.drawImage(goolImage ,gool_X,gool_Y,gool_H,gool_W )
+	}
+	if (tempo > 91 )
+	{
+	imageGool = false 
+	tempo = 0 
+	}
+	}
+	}
+	function goolp1 ()
+	{
+	if (goolPlayer1 == true && jogoComecou == false )
+	{
+	    bola_x = player2_X -45  
+	    bola_y = player2_Y + player1_H/2
+	}
+	if (goolPlayer2 == true && jogoComecou == false )
+	{
+	    bola_x = player1_X +25  
+	    bola_y = player1_Y + player1_H/2
+	}
+	}
+	
+	
+//Play	 
+	 function loop ()
+	  { audioFundoCont()
+	  
+	    if (controleMenu == 0 )
+	{
+		drawMenu()
+	}
+	if (controleMenu == 1)
+	{
+	   drawCretidos()
+	}
+	
+	if (controleMenu == 2)
+	{ 
+	update ()
+	goolp1 ()
+	acabarJogo()
+	updateBola ()
+	draw()
+	gool()
+	}
+	if ( controleMenu == 3 )
+	{
+drawP1Ganhou()
+	
+	}
+	if (controleMenu == 4)
+	{
+	drawP2Ganhou()
+	}
+
+	
+	setTimeout(loop,30)	
+
+}
+	loop()
+          document.addEventListener("keydown", _keyDown, true);
+		  document.addEventListener("keyup",   _keyUp,   true);
+		  link.addEventListener("mouseup",   _mouseUp,   false);
+	
+	</script>
+	</body>
+	</html>
+	
